@@ -1,0 +1,45 @@
+* Real-Time Messaging Application in Golang
+
+** Introduction
+
+Building a real-time messaging application in Golang can be achieved using WebSocket technology.
+
+** Prerequisites
+
+- Basic knowledge of the Go programming language
+- Familiarity with WebSocket communication
+
+** Steps to Develop
+
+*** Step 1: Setting Up the Project
+
+
+*** Step 2: Import Required Packages
+
+- Import the "net/http" package for creating the HTTP server.
+- Import the "github.com/gorilla/websocket" package for WebSocket communication.
+
+*** Step 3: Create WebSocket Handlers
+
+- Create a WebSocket upgrade handler that upgrades HTTP connections to WebSocket connections.
+- Initialize a WebSocket connection using the "Upgrader" from the "github.com/gorilla/websocket" package.
+
+*** Step 4: Handle Incoming Messages
+
+- In the WebSocket handler, create a loop to continuously read messages from the WebSocket connection.
+- Handle incoming messages and perform appropriate actions.
+
+*** Step 5: Broadcast Messages
+
+- Implement a mechanism to broadcast messages to all connected clients.
+- Maintain a list of active WebSocket connections and use channels to send messages to all clients.
+
+*** Step 6: Client-Side Implementation
+
+- Create a basic HTML and JavaScript front-end for the messaging application.
+- Use the JavaScript WebSocket API to connect to the server and send/receive messages.
+
+*** Step 7: Testing and Running
+
+- Start the Go application using the command: `go run main.go`
+- Access the client-side interface in a web browser to test real-time messaging.
