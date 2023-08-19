@@ -11,6 +11,8 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
+var clients = make(map[*websocket.Conn]bool) // Store active connections
+
 // HandleWebSocket handles WebSocket connections
 func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Upgrade HTTP connection to WebSocket connection
@@ -21,13 +23,26 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
+	// Add the new connection to the clients map
+	clients[conn] = true
+
 	// Handle WebSocket messages
 	for {
 		messageType, p, err := conn.ReadMessage()
 		if err != nil {
+			// Remove the connection from the clients map
+			delete(clients, conn)
 			return
 		}
 
+		// Broadcast the message to the client
+		for client := range clients {
+			if err := client.WriteMessage(messageType, p); err != nil {
+				// If sending message to client fails, remove the connection
+				delete(clients, client)
+				client.Close()
+			}
+		}
 		// Process the received message based on messageType
 		// Example: Handle text messages
 		switch messageType {
