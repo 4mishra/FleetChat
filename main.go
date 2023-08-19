@@ -6,12 +6,15 @@ import (
 )
 
 // Upgrader for WebSocket connections
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
+var (
+	upgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
+	clients = make(map[*websocket.Conn]bool) // Store active connections
+	broadcast = make(chan []byte) // Channel for broadcasting messages
+)
 
-var clients = make(map[*websocket.Conn]bool) // Store active connections
 
 // HandleWebSocket handles WebSocket connections
 func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
@@ -35,14 +38,6 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Broadcast the message to the client
-		for client := range clients {
-			if err := client.WriteMessage(messageType, p); err != nil {
-				// If sending message to client fails, remove the connection
-				delete(clients, client)
-				client.Close()
-			}
-		}
 		// Process the received message based on messageType
 		// Example: Handle text messages
 		switch messageType {
@@ -74,7 +69,25 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
+func BroadcastMessages() {
+	for {
+		// Receive message from the broadcast channel
+		message := <-broadcast
+
+		// Broadcast the message to all active connections
+		for client := range clients {
+			if err := client.WriteMessage(messageType, p); err != nil {
+				// If sending message to client fails, remove the connection
+				delete(clients, client)
+				client.Close()
+			}
+		}
+	}
+}
 func main() {
+	// Start the broadcast goroutine
+	go BroadcastMessages()
 	http.HandleFunc("/ws", HandleWebSocket)
 	http.ListenAndServe(":8080", nil)
 }
