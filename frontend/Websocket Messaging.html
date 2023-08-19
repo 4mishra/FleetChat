@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Messaging</title>
+</head>
+<body>
+    <div id="messages"></div>
+    <input type="text" id="inputMessage" placeholder="Type your message...">
+    <button id="sendMessage">Send</button>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:8080/ws"); // Replace with your server address
+
+        // Function to add a new message to the UI
+        function addMessage(message) {
+            const messagesDiv = document.getElementById("messages");
+            const messageDiv = document.createElement("div");
+            messageDiv.textContent = message;
+            messagesDiv.appendChild(messageDiv);
+        }
+
+        // Handle receiving messages from the server
+        socket.addEventListener("message", event => {
+            const message = event.data;
+            addMessage("Received: " + message);
+        });
+
+        // Handle sending messages to the server
+        const sendMessageButton = document.getElementById("sendMessage");
+        const inputMessage = document.getElementById("inputMessage");
+        sendMessageButton.addEventListener("click", () => {
+            const message = inputMessage.value;
+            socket.send(message);
+            addMessage("Sent: " + message);
+            inputMessage.value = ""; // Clear the input field
+        });
+    </script>
+</body>
+</html>
