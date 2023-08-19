@@ -1,0 +1,30 @@
+* Implementing Group Chats in Real-Time Messaging
+
+
+** Steps to Implement
+
+*** User Management and Group Creation
+
+- Implement a user management system to keep track of connected clients.
+- Add functionality to create and manage groups for group chats.
+
+*** Extending WebSocket Handlers
+
+- Update the WebSocket upgrade handler to support group-specific communication.
+- Use channels and goroutines to handle messages within groups.
+
+*** Sending Messages to Groups
+
+- Enhance the message handling logic to identify group messages.
+- Ensure that messages are broadcasted to all members of the target group.
+
+*** Client-Side Implementation
+
+- Extend the client-side HTML and JavaScript interface to facilitate group chat creation and participation.
+- Implement group selection options within the UI.
+
+*** Displaying Group Messages
+
+- Modify the client-side JavaScript to handle incoming group messages.
+- Use DOM manipulation to display messages within the appropriate group chat window.
+
