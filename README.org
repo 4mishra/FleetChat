@@ -1,0 +1,63 @@
+* FleetChat
+
+** Description
+
+FleetChat is a high-performance real-time chat application that redefines how you connect and communicate with others. With its lightning-fast responsiveness and user-friendly interface, FleetChat ensures your conversations are seamless and efficient.
+
+** Features
+
+- Real-time Messaging: Engage in instant conversations with friends, colleagues, and peers.
+- Blazing Speed: Experience rapid message delivery without delays.
+- User-Friendly Interface: Intuitive design for a smooth and enjoyable chatting experience.
+- Multimedia Sharing: Share images, videos, and files seamlessly within the chat.
+- Group Chats: Create and participate in group discussions effortlessly.
+- Message History: Retrieve past messages to never miss a detail.
+
+** Getting Started
+
+*** Prerequisites
+
+- Web browser with internet connection
+
+*** Installation
+
+No installation required. FleetChat is accessible through any modern web browser.
+
+** Usage
+
+1. Open your web browser.
+2. Visit [https://www.fleetchat.com](https://www.fleetchat.com).
+3. Sign up for a new account or log in.
+4. Start chatting instantly with your contacts!
+
+** Code Examples
+
+Here's an example of how FleetChat utilizes WebSockets for real-time communication:
+
+#+BEGIN_SRC javascript
+// Establish a WebSocket connection
+const socket = new WebSocket('wss://api.fleetchat.com/socket');
+
+// Listen for incoming messages
+socket.addEventListener('message', (event) => {
+  const message = JSON.parse(event.data);
+  displayMessage(message);
+});
+
+// Send a message
+function sendMessage(text) {
+  const message = {
+    type: 'text',
+    content: text,
+  };
+  socket.send(JSON.stringify(message));
+}
+#+END_SRC
+
+** Contributing
+
+We welcome contributions from the community! If you're interested in enhancing FleetChat, please follow our [Contribution Guidelines](CONTRIBUTING.md).
+
+** License
+
+FleetChat is licensed under the [MIT License](LICENSE).
